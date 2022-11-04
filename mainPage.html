@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="styles.css">
+<link rel="js" href="JSES6.js">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    let counter = 0;
+    class ingrediant {
+        constructor(id, name, image, calories) {
+            this.id = id;
+            this.name = name;
+            this.image = image;
+            this.calories = calories;
+        }
+        Render(a, se) {
+            {
+                let s = `<div class="col-6 col-sm-4 col-lg-2 ings">`
+                if (se == "a") {
+                    s += `<input id="${ingArr.indexOf(this)}" type="checkbox" class = "ch">`
+                }
+                s += `<p>Id: ${this.id}</p>
+                            <p>Name: ${this.name}</p>
+                            <img src="${this.image}">
+                            <p>Calories: ${this.calories}</p>
+                            </div>`
+                $(a).append(s)
+            };
+        }
+    }
+
+    class DishRecipe {
+        constructor(name, ingrediants, time, cookingMethod, image) {
+            this.name = name;
+            this.ingrediants = ingrediants;
+            this.time = time;
+            this.cookingMethod = cookingMethod;
+            this.image = image;
+        }
+
+        Render() {
+            counter = counter - 1
+            let s = this.getTotalCalories()
+            $("#recipes").append(
+                `<div class="col-6 col-sm-4 col-lg-2 ings">
+                            <p>Name: ${this.name}</p>
+                            <img src="${this.image}">
+                                <p>Coocking Method: ${this.cookingMethod}</p>
+                                <p>Time:${this.time}</p>
+                                <p>Total calories: ${s}</p>
+                                <button class="recBut" id="${counter}">Get Ingrediants</button>
+                        </div>`)
+
+            $("#" + counter).click(this.getIngredients.bind(this))
+        }
+
+        getTotalCalories() {
+            let sum = 0;
+            this.ingrediants.forEach(element => {
+                sum += element.calories;
+            })
+            return sum;
+        }
+
+        getIngredients() {
+            document.getElementById("inMod").innerHTML = "";
+            this.ingrediants.forEach(element => {
+                element.Render("#inMod", "b");
+            });
+            $("#mod").show();
+        }
+
+    }
+</script>
+
+
+<body>
+    <div id="buttons">
+        <button id="addIng" class="mainBtn">Add Ingrediant</button>
+        <button id="addRec" class="mainBtn">Add Recipe</button>
+    </div>
+    <div id="conIng" class="container">
+        <div class="row" id="ingrediants">
+
+        </div>
+    </div>
+    <div id="conRec" class="container">
+        <div class="row" id="recipes">
+
+        </div>
+    </div>
+    <div class="adds" id="addIngCon">
+        <div class="addCon">
+            <h4>Add a new Ingrediant:</h4>
+            <label for="ingName">Ingerdiant Name:</label><br>
+            <input type="text" id="ingName"><br>
+            <label for="ingId">Ingrediant ID:</label><br>
+            <input type="text" id="ingId"><br>
+            <label for="ingImg">Ingrediant Image (URL):</label><br>
+            <input type="text" id="ingImg"><br>
+            <label for="ingCal">Ingrediant Calories:</label><br>
+            <input type="text" id="ingCal">
+            <div>
+                <button id="subIng">Add</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="adds" id="addRecCon">
+        <div class="addCon">
+            <h4>Add a new Recipe:</h4>
+            <label for="recName">Recipe Name:</label><br>
+            <input type="text" id="recName"><br>
+            <label for="recCM">Cooking Method:</label><br>
+            <input type="text" id="recCM"><br>
+            <label for="recImg">Recipe Image (URL):</label><br>
+            <input type="text" id="recImg"><br>
+            <label for="recTime">Time:</label><br>
+            <input type="text" id="recTime"><br>
+            <div id="addIngCon" class="container">
+                <button id="subRec" onclick="addIngToRec()">Add</button>
+                <div class="row" id="addIngRow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mod" class="modal">
+        <div class="modal-content">
+            <span style="background-color: grey;" class="close" onClick="hideMod()">×</span>
+            <h1 style="border-bottom: solid black 2px; background-color: grey;">Ingrediants:</h1>
+            <div id="inMod"></div>
+
+        </div>
+    </div>
+</body>
+
+
+
+<script>
+    //load
+    $("#addIngCon").hide();
+    $("#addRecCon").hide();
+    $("#conIng").hide();
+
+    ingArr = [new ingrediant(1, "Carrots", "https://cdn.wikifarmer.com/market/en/images/thumbnails/1200/630/detailed/69/karota-en-4.jpg.jpg?t=1650539816", 50), new ingrediant(1, "Cucumber", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Australia_Cucumbers_for_sale_at_store.jpg/1200px-Australia_Cucumbers_for_sale_at_store.jpg", 60)];
+    ingArr.forEach(element => {
+        element.Render("#ingrediants", "b");
+    });
+    recArr = [new DishRecipe("Soup", [ingArr[1]], 20, "High Heat, 20 min", "https://www.allrecipes.com/thmb/jOofJqYckYDfxlIMyCBMNJ3wz0I=/2000x2000/filters:no_upscale()/26460-quick-and-easy-chicken-noodle-soup-allrecipes-1x1-1-b88125437574471db3e114c40bc6928e.jpg")]
+    recArr.forEach(element => {
+        element.Render();
+    });
+</script>
+
+<script>
+    //for clicking on Add Ingrediant
+    $("#addIng").click(function () {
+        $("#conIng").hide();
+        $("#conRec").hide();
+        $("#addRecCon").hide();
+        $("#addIngCon").show();
+    })
+
+    //for clicking on Add Recipe
+    $("#addRec").click(function () {
+        document.getElementById("addIngRow").innerHTML = "";
+        addIngArr = [];
+        ingArr.forEach(element => {
+            element.Render("#addIngRow", "a");
+        });
+        $("#conIng").hide();
+        $("#conRec").hide();
+        $("#addIngCon").hide();
+        $("#addRecCon").show();
+    })
+
+    //for hiding the Modal
+    function hideMod() {
+        $("#mod").hide();
+    }
+
+    //used for choosing ingrediants to add while creating a new recipe.
+    function addIngToRec() {
+        arr = [];
+        if ($("#recName").val() == "") {
+            alert("Please enter the ingrediant's name.");
+            return false;
+        }
+        if ($("#recCM").val() == "") {
+            alert("Please enter a valid cooking method.");
+            return false;
+        }
+        if ($("#recImg").val() == "") {
+            alert("Please enter the ingrediant's image URL.");
+            return false;
+        }
+        if ($("#recTime").val() == "" || $.isNumeric($("#recTime").val()) == false) {
+            alert("Please enter the a valid time.");
+            return false;
+        }
+        $(".ch:checkbox:checked").each(function () {
+            arr.push(ingArr[this.id]);
+        })
+        alert('Recipe has been added successfully.');
+        recArr.push(new DishRecipe($("#recName").val(), arr, $("#recTime").val(), $("#recCM").val(), $("#recImg").val()));
+        document.getElementById("recipes").innerHTML = "";
+        recArr.forEach(element => {
+            element.Render();
+        });
+
+        $("#conIng").hide();
+        $("#conRec").show();
+        $("#addIngCon").hide();
+        $("#addRecCon").hide();
+
+    }
+
+
+    $("#subIng").click(function () {
+        if ($("#ingName").val() == "") {
+            alert("Please enter the ingrediant's name.");
+            return false;
+        }
+        if ($("#ingId").val() == "" || $.isNumeric($("#ingId").val()) == false) {
+            alert("Please enter a valid ID.");
+            return false;
+        }
+        if ($("#ingImg").val() == "") {
+            alert("Please enter the ingrediant's image URL.");
+            return false;
+        }
+        if ($("#ingCal").val() == "" || $.isNumeric($("#ingCal").val()) == false) {
+            alert("Please enter the a valid number of calories.");
+            return false;
+        }
+        alert('Ingrediant has been added successfully.');
+        ingArr.push(new ingrediant($("#ingId").val(), $("#ingName").val(), $("#ingImg").val(), $("#ingCal").val()))
+        $("#conIng").hide();
+        $("#conRec").show();
+        $("#addIngCon").hide();
+        $("#addRecCon").hide();
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,74 @@
+html,
+body {
+    background-color: white;
+    height: 100%
+}
+
+#buttons {
+    
+    display: flex;
+    justify-content: center;
+    background: rgb(68, 78, 87);
+    height: 10%;
+}
+
+#subRec, #subIng {
+margin-top: 5px;
+}
+
+#recipes {
+    margin-top: 10px;
+}
+button {
+ border-radius: 12px;
+}
+.mainBtn {
+    font-size: 25px;
+    margin: auto;
+    height: 60%;
+    width: 30%;
+
+}
+
+img {
+    border: lightslategray 2px solid;
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+
+.recBut{
+width: 100%;
+background-color: lightslategray;
+border: 2px solid black;
+border-bottom: 0;
+
+}
+ .ings p {
+    margin-bottom:0px;
+ }
+
+.ings {
+    padding:0px;
+    border: 2px solid black;
+    margin: auto;
+    vertical-align: middle;
+    text-align: left;
+    border-radius: 5px;
+}
+
+#mod {
+    height: 85%;
+    width: 85%;
+    text-align: center;
+    margin: 20% auto;
+
+}
+
+.addCon {
+    margin: auto;
+    text-align: center;
+}
+
